@@ -1,0 +1,25 @@
+---
+title: "code-Red_module5"
+author: "code-Red"
+date: "2022-10-04"
+output: html_document
+bibliography: BIOL2140.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+The purpose of this project was to determine whether human body temperature varies according to activity level. A study done by @wunder1974effect revealed that the body temperature of Ord's kangaroo rat was higher during times of activity than inactivity. In order to determine whether a similar relationship exists in humans, temperature was recorded in 4 subjects during 5 minutes of rest (sitting on a couch) and 5 minutes of activity (jumping jacks). The results were plotted in order to determine whether there is a significant difference in human body temperature when active versus inactive.
+
+# Methods
+
+# Results
+
+# Discussion
+
+# Author Contributions
+
+# References
