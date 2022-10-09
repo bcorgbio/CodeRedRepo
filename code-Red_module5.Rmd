@@ -8,12 +8,8 @@ nocite: '@*'
 ---
 
 ```{r,include=FALSE}
-library(tidyverse) #always
-library(ape) #for evo analysis
-library(nlme) #ditto
-library(MuMIn) #for AIC
-library(geiger) #for eco analysis
-library(knitr) #for knitting options
+library(tidyverse) 
+library(knitr) 
 ```
 
 ```{r setup, include=FALSE}
@@ -51,14 +47,16 @@ view(dat)
 # Results
 ```{r, "Plot Data"}
 dat%>%
-  ggplot()+geom_boxplot(aes(x=activity,y=degC))+facet_grid(.~who) #plot to see what we get
-
+  ggplot()+geom_boxplot(aes(x=activity,y=degC))+facet_grid(.~who)+
+  labs(caption = "Mean Body Temperature Between Activity Type By Subject") +
+  theme(plot.caption = element_text(hjust=0.5))
 ```
 
 # Discussion
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity is not unheard of. @hoffman201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. The lack of difference in mean body temperature between activity levels reflected by our data is incongruent with their findings. However, representative data from @hoffman201224 also showed that body temperature returns to a near-original level in 30 minutes after exercising. This suggests a time-sensitive nature of activity-dependent body temperature variation. In our study, the absence of substantial differences in body temperature recordings between activity levels could be caused by a mixture of insufficient activity intensity and success in heat dissipation. Further efforts could expand the scope of this study by taking metabolic rates and chronologically relevant nutrients intake into account.
 
 # Author Contributions
 Justin Lau - Arduino code, recording data, methods, plotting data
-
+Tingwei Hu - discussion & bib, edited Rmd setup, plot caption
 
 # References
