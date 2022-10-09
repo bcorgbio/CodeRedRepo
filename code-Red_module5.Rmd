@@ -4,7 +4,17 @@ author: "code-Red"
 date: "2022-10-04"
 output: html_document
 bibliography: BIOL2140.bib
+nocite: '@*'
 ---
+
+```{r,include=FALSE}
+library(tidyverse) #always
+library(ape) #for evo analysis
+library(nlme) #ditto
+library(MuMIn) #for AIC
+library(geiger) #for eco analysis
+library(knitr) #for knitting options
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -16,10 +26,39 @@ The purpose of this project was to determine whether human body temperature vari
 
 # Methods
 
+An Arduino DHT__ temperature sensor was placed in the armpits of each group member to measure their axillary body temperature (°C). For each group member, body temperature was recorded for 100 seconds after sitting on the couch and five minutes of jumping jacks. 
+
+```{r, "Join Data into a Table"}
+
+dat.f <- list.files(pattern = "couch|active.csv") #find the files
+
+dat.l <- list() #make an empty list
+
+for(i in dat.f){
+  met.dat<- unlist(strsplit(i,"_")) #split of the filename string
+  who <- met.dat[1] #store the first element
+  activity <- gsub(".csv","",met.dat[2]) #store second element, dropping CSV with gsub()
+  dat.l[[i]]<- read_csv(i)%>%
+    mutate(who=who,activity=activity) #read, then store data with additional columns of metada in list as position unique to i
+  
+}
+dat <- do.call(rbind,dat.l) #combine the list into table
+view(dat)
+
+```
+
+
 # Results
+```{r, "Plot Data"}
+dat%>%
+  ggplot()+geom_boxplot(aes(x=activity,y=degC))+facet_grid(.~who) #plot to see what we get
+
+```
 
 # Discussion
 
 # Author Contributions
+Justin Lau - Arduino code, recording data, methods, plotting data
+
 
 # References
