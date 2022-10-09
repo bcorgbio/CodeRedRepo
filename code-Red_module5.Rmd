@@ -22,7 +22,7 @@ The purpose of this project was to determine whether human body temperature vari
 
 # Methods
 
-An Arduino DHT__ temperature sensor was placed in the armpits of each group member to measure their axillary body temperature (°C). For each group member, body temperature was recorded for 100 seconds after sitting on the couch and five minutes of jumping jacks. 
+An Arduino DHT__ temperature sensor was placed in the armpits of each group member to measure their axillary body temperature (°C). The arduino DHTxx sensor was set up following the instruction and file provided by @ada_2012 which was further modified to measure the body temperature over time. For each group member, body temperature was recorded 100 seconds after sitting on the couch and after five minutes of jumping jacks. The collected data was then analyzed through boxplot model to differentiate the active and rest body temperature across all the group members.
 
 ```{r, "Join Data into a Table"}
 
@@ -58,5 +58,5 @@ As endotherms, humans maintain a constant body temperature independent of the en
 # Author Contributions
 Justin Lau - Arduino code, recording data, methods, plotting data
 Tingwei Hu - discussion & bib, edited Rmd setup, plot caption
-
+Jinseo Kim - bib, methods revision
 # References
