@@ -22,7 +22,7 @@ The purpose of this project was to determine whether human body temperature vari
 
 # Methods
 
-An Arduino DHT__ temperature sensor was placed in the armpits of each group member to measure their axillary body temperature (°C). The arduino DHTxx sensor was set up following the instruction and file provided by @ada_2012 which was further modified to measure the body temperature over time. For each group member, body temperature was recorded 100 seconds after sitting on the couch and after five minutes of jumping jacks. The collected data was then analyzed through boxplot model to differentiate the active and rest body temperature across all the group members.
+An Arduino DHT11 temperature sensor was set up following the instruction and file provided by @ada_2012 and was further modified to measure body temperature over time. The sensor was placed in the armpit of each group member to measure their axillary body temperature (°C) during periods of activity and inactivity. Body temperature was recorded 100 seconds after sitting on the couch and after five minutes of jumping jacks. The collected data was then plotted using a boxplot model in order to compare the active and at rest body temperatures across all the group members.
 
 ```{r, "Join Data into a Table"}
 
@@ -53,10 +53,11 @@ dat%>%
 ```
 
 # Discussion
-As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity is not unheard of. @hoffman201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. The lack of difference in mean body temperature between activity levels reflected by our data is incongruent with their findings. However, representative data from @hoffman201224 also showed that body temperature returns to a near-original level in 30 minutes after exercising. This suggests a time-sensitive nature of activity-dependent body temperature variation. In our study, the absence of substantial differences in body temperature recordings between activity levels could be caused by a mixture of insufficient activity intensity and success in heat dissipation. Further efforts could expand the scope of this study by taking metabolic rates and chronologically relevant nutrients intake into account.
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. @hoffman201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. The lack of difference in mean body temperature between activity levels reflected by our data is incongruent with their findings. However, representative data from @hoffman201224 also showed that body temperature returns to a near-original level in 30 minutes after exercising. This suggests a time-sensitive nature of activity-dependent body temperature variation. In our study, the absence of substantial differences in body temperature recordings between activity levels could be caused by a mixture of insufficient activity intensity and success in heat dissipation. Further efforts could expand the scope of this study by taking metabolic rates and chronologically relevant nutrients intake into account.
 
 # Author Contributions
 Justin Lau - Arduino code, recording data, methods, plotting data
 Tingwei Hu - discussion & bib, edited Rmd setup, plot caption
 Jinseo Kim - bib, methods revision
+Liz Asprinio - Introduction, methods, bibliography
 # References
