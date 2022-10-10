@@ -53,6 +53,7 @@ dat%>%
 ```
 
 # Discussion
+
 As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. @hoffman201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. The lack of difference in mean body temperature between activity levels reflected by our data is incongruent with their findings. However, representative data from @hoffman201224 also showed that body temperature returns to a near-original level in 30 minutes after exercising. This suggests a time-sensitive nature of activity-dependent body temperature variation. In our study, the absence of substantial differences in body temperature recordings between activity levels could be caused by a mixture of systemic error in measurements and success in heat dissipation. Because measurements were made through clothing fabric for sanitary purposes, recorded data might not fully reflect small fluctuations in body temperature, especially when the expected variation is smaller than the ~1.2°C reported by @hoffman201224. Further efforts could expand the scope of this study by taking metabolic rates and chronologically relevant nutrients intake into account, and exercise more robust control conditions.
 
 # Author Contributions
