@@ -18,29 +18,27 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-The purpose of this project was to determine whether human body temperature varies according to activity level. A study done by @wunder1974effect revealed that the body temperature of Ord's kangaroo rat was higher during times of activity than inactivity. In order to determine whether a similar relationship exists in humans, temperature was recorded in 4 subjects during 5 minutes of rest (sitting on a couch) and 5 minutes of activity (jumping jacks). The results were plotted in order to determine whether there is a significant difference in human body temperature when active versus inactive.
+The purpose of this project was to determine whether human body temperature varies according to activity level within individuals. A study done by @wunder1974effect revealed that the body temperature of Ord's kangaroo rat was higher during times of activity than inactivity. In order to determine whether a similar relationship exists in humans, temperature was recorded in 4 subjects during 5 minutes of rest (sitting on a couch) and 5 minutes of activity (jumping jacks). The results were plotted in order to determine whether there is a significant difference in human body temperature when active versus inactive.
 
 # Methods
 
 An Arduino DHT11 temperature sensor was set up following the instruction and file provided by @ada_2012 and was further modified to measure body temperature over time. The sensor was placed in the armpit of each group member to measure their axillary body temperature (°C) during periods of activity and inactivity. Body temperature was recorded 100 seconds after sitting on the couch and after five minutes of jumping jacks. The collected data was then plotted using a boxplot model in order to compare the active and at rest body temperatures across all the group members.
 
-```{r, "Join Data into a Table"}
+```{r, "Join Data into a Table", message=FALSE}
 
-dat.f <- list.files(pattern = "couch|active.csv") #find the files
+dat.f <- list.files(pattern = "couch|active.csv")
 
-dat.l <- list() #make an empty list
-
+dat.l <- list() 
 for(i in dat.f){
-  met.dat<- unlist(strsplit(i,"_")) #split of the filename string
-  who <- met.dat[1] #store the first element
-  activity <- gsub(".csv","",met.dat[2]) #store second element, dropping CSV with gsub()
+  met.dat<- unlist(strsplit(i,"_")) 
+  who <- met.dat[1] 
+  activity <- gsub(".csv","",met.dat[2])
   dat.l[[i]]<- read_csv(i)%>%
-    mutate(who=who,activity=activity) #read, then store data with additional columns of metada in list as position unique to i
-  
+    mutate(who=who,activity=activity) 
 }
-dat <- do.call(rbind,dat.l) #combine the list into table
-view(dat)
 
+dat <- do.call(rbind,dat.l) #combine the list into table
+dat
 ```
 
 
@@ -48,17 +46,21 @@ view(dat)
 ```{r, "Plot Data"}
 dat%>%
   ggplot()+geom_boxplot(aes(x=activity,y=degC))+facet_grid(.~who)+
-  labs(caption = "Mean Body Temperature Between Activity Type By Subject") +
+  labs(caption = "Figure 1: Mean Body Temperature Between Activity Type By Subject") +
   theme(plot.caption = element_text(hjust=0.5))
 ```
 
+The mean axial temperature between activity levels differed significantly in every subject, in that an increase in temperature was observed after 5 minutes of jumping-jacks comparing to resting. This is indicated by the mean temperature between activity levels consistently falling out of each others' ±1 standard deviation within each subject.
+
+
 # Discussion
 
-As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. @hoffman201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. The lack of difference in mean body temperature between activity levels reflected by our data is incongruent with their findings. However, representative data from @hoffman201224 also showed that body temperature returns to a near-original level in 30 minutes after exercising. This suggests a time-sensitive nature of activity-dependent body temperature variation. In our study, the absence of substantial differences in body temperature recordings between activity levels could be caused by a mixture of systemic error in measurements and success in heat dissipation. Because measurements were made through clothing fabric for sanitary purposes, recorded data might not fully reflect small fluctuations in body temperature, especially when the expected variation is smaller than the ~1.2°C reported by @hoffman201224. Further efforts could expand the scope of this study by taking metabolic rates and chronologically relevant nutrients intake into account, and exercise more robust control conditions.
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. The difference in mean body temperature between activity levels reflected by our data is congruent with @hoffmann201224, who found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. However, the mean body temperatures extrapolated from our data, especially for the resting condition, seem to be erroneously low to the point where they are physiologically implausible (all < 34°C). This could indicate systemic errors during data collection. For example, axial temperature readings were taking under the armpit through clothing fabric for sanitary purposes, which could have resulted in slower heat transduction during the start of each trial. 
 
 # Author Contributions
-Justin Lau - Arduino code, recording data, methods, plotting data
-Tingwei Hu - discussion & bib, edited Rmd setup, plot caption, Arduino setup (w/ Justin)
-Jinseo Kim - bib, methods revision
+Justin Lau - Arduino code, recording data, methods, plotting data\
+Tingwei Hu - discussion & bib, edited Rmd setup, plot caption, Arduino setup (w/ Justin)\
+Jinseo Kim - bib, methods revision\
 Liz Asprinio - Introduction, methods, bibliography
+
 # References
