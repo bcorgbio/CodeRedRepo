@@ -50,13 +50,12 @@ dat%>%
   theme(plot.caption = element_text(hjust=0.5))
 ```
 
-The mean axial temperature between activity levels differed significantly in every subject, in that an increase in temperature was observed after 5 minutes of jumping-jacks comparing to resting. This is indicated by the mean temperature between activity levels consistently falling out of each others' ±1 standard deviation within each subject.
+The mean axial temperature between activity levels differed significantly in every subject, in that a decrease in temperature was observed after 5 minutes of jumping-jacks comparing to resting. This is indicated by the mean temperature between activity levels consistently falling out of each others' ±1 standard deviation within each subject.
 
 
 # Discussion
 
-As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. The difference in mean body temperature between activity levels reflected by our data is congruent with @hoffmann201224, who found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. However, the mean body temperatures extrapolated from our data, especially for the resting condition, seem to be erroneously low to the point where they are physiologically implausible (all < 34°C). This could indicate systemic errors during data collection. For example, axial temperature readings were taking under the armpit through clothing fabric for sanitary purposes, which could have resulted in slower heat transduction during the start of each trial. To further improve our study we could record temperature during the time of the exercise and compare it to the rest temperature to observe if the temperature would equalize due to our endothermic physiology.
-
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. @hoffmann201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. However, the mean body temperatures from our data showed significantly higher values in the resting condition than the active condition, which was unexpected and incongruent with @hoffmann201224. This could indicate systemic errors during data collection. Alternatively, axial temperature readings were taking under the armpit through clothing fabric for sanitary purposes, which could have resulted in cooling due to constant movement and slower heat transduction during the start of each trial. To further improve our study we could record temperature in contact with the body during the time of the exercise and compare it to the rest temperature to observe if the temperature would equalize due to our endothermic physiology.
 
 # Author Contributions
 Justin Lau - Arduino code, recording data, methods, plotting data\
