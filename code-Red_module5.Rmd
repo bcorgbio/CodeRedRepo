@@ -61,7 +61,7 @@ As endotherms, humans maintain a constant body temperature independent of the en
 # Author Contributions
 Justin Lau - Arduino code, recording data, methods, plotting data\
 Tingwei Hu - discussion & bib, edited Rmd setup, plot caption, Arduino setup (w/ Justin)\
-Jinseo Kim - bib, methods revision, discussion revision
+Jinseo Kim - bib, methods revision, discussion revision\
 Liz Asprinio - Introduction, methods, bibliography
 
 # References
