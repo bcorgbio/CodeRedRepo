@@ -11,11 +11,12 @@ nocite: '@*'
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r packages, include=FALSE}
+```{r, packages, include=FALSE}
 library(tidyverse)
 library(Momocs)
 library(knitr)
 library(vroom)
+library(ape)
 ```
 
 #Author Contributions
