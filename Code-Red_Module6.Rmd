@@ -34,7 +34,7 @@ out %>%
   coo_flipx()
 ```
 
-```{r, loading files}
+```{r, loading files & more preprocessing, results='hide'}
 #make a large df with vroom
 out.df <- vroom::vroom(f, id = "filename")
 #add wing info
@@ -47,12 +47,37 @@ outs.l <- sapply(f,function(x) out.df %>% filter(filename==x) %>% select(X,Y) %>
 wings <- gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(names(outs.l)))
 outs <-  outs.l %>% 
   Out(fac=list(wing=wings)) %>% 
-  coo_flipx()
-```
-```{r, }
-
+  coo_flipx() %>% 
+  stack() #visualize both wings uncorreced for size
 ```
 
+```{r, Separate and Procrustes transform both wings}
+#separate outlines by fore&hind wing
+forewings <- outs %>% 
+  filter(wing=="forewing")
+hindwings <- outs %>% 
+  filter(wing=="hindwing")
+#Procrustes, align
+fore.min <- forewings %>% 
+  coo_nb() %>% 
+  min()
+forewings %>%
+  coo_interpolate(fore.min) %>% 
+  fgProcrustes() %>% 
+  stack() #visualize forewings
+hind.min <- hindwings %>% 
+  coo_nb() %>% 
+  min()
+hindwings %>% 
+   coo_interpolate(hind.min) %>% 
+  coo_slide(id=1) %>% 
+   coo_align()  %>%
+  fgProcrustes() %>%
+  stack() #visualize hindwings
+```
+```{r,}
+
+```
 
 #Results
 
