@@ -31,7 +31,7 @@ Based on these findings, it can be concluded that Lepidoptera hindwing shape is 
 Further studies suggest that selection for forewing shape is determined by flight ability, while selection for hindwing shape is determined by several possibilities, such as neutral selection, sexual selection, and predator avoidance (Sourakov 2013, Barber et al. 2015, Willmott et al. 2017, Rubin et al. 2018, Chazot et al. 2016).
 While these studies show that Lepidoptera forewings and hindwings have evolved different functions, there is still much that is not known about their evolutionary history.
 The purpose of this study is to determine whether Lepidoptera forewings and hindwings vary in their evolutionary rates, if different lineages have evolved at significantly different rates, and if forewing and hindwing shapes are correlated.
-This will be done by running a comparative phylogenetic analysis on the wing shape data of more than 200 species of Lepidoptera, using a phylogenetic tree provided by @kawahara2019phylogenomics.
+This will be done by running a comparative phylogenetic analysis on the wing shape data of more than 200 species of Lepidoptera, using the phylogeny provided by @kawahara2019phylogenomics.
 
 #Methods
 
@@ -177,7 +177,7 @@ lep.tree <- ladderize(lep.tree)
 plot(lep.tree,cex=0.1)
 
 lep.tree$tip.label <- gsub("_"," ",lep.tree$tip.label)
-basename(names(outs))[1:5]
+
 lep.sp <- read_csv("lep_image_data.csv")
 head(lep.sp)
 head(lep.sp$identifier)
