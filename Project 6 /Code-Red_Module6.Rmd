@@ -17,13 +17,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, packages, include=FALSE}
 library(tidyverse)
 library(Momocs)
-library(ape)
-library(phytools)
-library(RRphylo)
+library(knitr)
 library(vroom)
 library(ape)
-library(ggtree)
+library(phytools)
 library(wesanderson)
+library(RRphylo)
 ```
 
 #Introduction
@@ -37,14 +36,15 @@ Images of various species of Lepidoptera were digitized using FIJI. Because the 
 
 (insert relevant coding procedure here)
 
-To prepare the comparative analysis on the PCA data, the phylogenetic tree was loaded positioned upper left.
+
+To prepare the comparative analysis on the PCA data the phylogenetic tree was loaded positioned upper left.
 The file names of each species were also identified using the identifier data provided by Prof. Kenaley.
 The PC data was added to the identified species data accordingly.
-The phylogeny  was modified to only include the species that were identified and had a PCA data.
+The phylogeny tree was modified to only include the species that were identified and had a PCA data.
 From here, the forewing and hindwing PC1 and PC2 were separated in different variable under the Brownian Motion.
 (insert relevant coding procedure here)
 
-To determine the evolutionary rate, "RRphylo" package was used to determine the rate of evolution based on wing shape and from there, any statistically significant shift in shape evolution based on the Lepidoptera's clades were identified.
+To determine the evolutionary rate, "RRphylo" package was used to determine the rate of evolution based on wing shape and from there, any statistically significant shift in shape evolution based on the Lepdioptera's clades were identified.
 The rate of the significant evolutionary shift was identified along with the name of clades.
 (insert relevant coding procedure here)
 
@@ -85,8 +85,7 @@ outs.l <- sapply(f,function(x) out.df %>% filter(filename==x) %>% select(X,Y) %>
 wings <- gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(names(outs.l)))
 outs <-  outs.l %>% 
   Out(fac=list(wing=wings)) %>% 
-  coo_flipx() %>% 
-  stack() #visualize both wings uncorrected for size
+  coo_flipx() #visualize both wings uncorreced for size
 ```
 
 ```{r, Separate and Procrustes transform both wings}
@@ -165,6 +164,7 @@ hindwing.pca %>%
 Comparative Analysis
 
 ```{r, Prepare for Comparative Analysis, include= FALSE}
+library(ape)
 
 lep.tree <- ape::read.tree("lep_tree2.tre")
 
@@ -174,10 +174,8 @@ lep.tree <- ladderize(lep.tree)
 plot(lep.tree,cex=0.1)
 
 lep.tree$tip.label <- gsub("_"," ",lep.tree$tip.label)
-
 basename(names(outs))[1:5]
-
-lep.sp <- read_csv("lep_image_data (1).csv")
+lep.sp <- read_csv("lep_image_data.csv")
 head(lep.sp)
 head(lep.sp$identifier)
 
@@ -267,6 +265,8 @@ hindPC2.BM<-brownie.lite(lep.tree2,hind.pc2*10)
 ```{r, }
 library(RRphylo)
 hindPC1.RR <- RRphylo(tree=lep.tree2,y=hind.pc1)
+hindPC1.SS<- search.shift(RR=hindPC1.RR,status.type="clade")
+
 plot(lep.tree2)
 nodelabels(node = as.numeric(rownames(hindPC1.SS$single.clades)),text = rownames(hindPC1.SS$single.clades))
 
