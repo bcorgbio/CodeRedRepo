@@ -35,8 +35,8 @@ This will be done by running a comparative phylogenetic analysis on the wing sha
 
 #Methods
 
-The outline-base shape analysis was analyzed using Elliptical Fourier analysis (EFA).The data of the Lepidoptera forewings and hindwings were visualized using principle components analysis(PCA) and EFA using functions included in the package "Momocs." The initial outlines combined forewing and hindwing outline for each species so it was separated via their file name, made into equal scale and superimposed onto each other for better analysis of their shape without factoring in the size of wings.
-After separating the wings into their shapes and equalizing their sizes, the PCA data was visualized to determine the distribution of morphoshape of the wings of the different species.
+Images of various species of Lepidoptera were digitized using FIJI. Because the initial outlines included both forewing and hindwing outlines for each species, they were separated via their file names. A Procrustes transformation was then performed in order to translate, rotate, and scale the outlines for better analysis of their shape without factoring in arbitrary wing size. Elliptical Fourier Analysis (EFA) was performed in order to describe wing shapes. Principle Component Analysis (PCA) was then performed in order to minimize the number of variables explaining the variance in the data set. The functions for these analyses are included in the R package "Momocs." PCA data was visualized to determine the distribution of morphoshape of the wings of the different species.
+
 (insert relevant coding procedure here)
 
 To prepare the comparative analysis on the PCA data the phylogenetic tree was loaded positioned upper left.

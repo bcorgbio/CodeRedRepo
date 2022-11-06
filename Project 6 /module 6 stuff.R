@@ -1,12 +1,22 @@
 install.packages("ape")
 install.packages("phytools")
 install.packages("vroom")
+install.packages("RRphylo")
+install.packages("CRAN")
 
 library(tidyverse)
 library(Momocs)
 library(ape)
 library(phytools)
 library(vroom)
+library(RRphylo)
+library(ggtree)
+library(wesanderson)
+
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("ggtree")
 
 f <- list.files("class_out_data",pattern=".txt|.csv",full.names = TRUE)
 
@@ -224,6 +234,106 @@ hindPC1.BM<-brownie.lite(lep.tree2,hind.pc1*10)
 forePC2.BM<-brownie.lite(lep.tree2,fore.pc2*10)
 hindPC2.BM<-brownie.lite(lep.tree2,hind.pc2*10)
 
+forePC1.BM$sig2.single
+  # looking at one of the values
+  # have to compare these values for report
 
+# looking at significant differences in evolutionary rates
 
+hindPC1.RR <- RRphylo(tree=lep.tree2,y=hind.pc1)
 
+hindPC1.RR$rates
+  # looking at the rates
+
+hindPC1.SS<- search.shift(RR=hindPC1.RR,status.type="clade")
+  # looking at rates that are significantly different from other ones
+hindPC1.SS$single.clades
+
+plot(lep.tree2)
+nodelabels(node = as.numeric(rownames(hindPC1.SS$single.clades)),text = rownames(hindPC1.SS$single.clades))
+  # visualize nodes with exceptional shifts
+
+hindPC1.plot <- plotShift(RR=hindPC1.RR,SS=hindPC1.SS)
+forePC1.plot <- plotShift(RR=hindPC1.RR,SS=hindPC1.SS)
+hindPC1.plot$plotClades()
+  # same way of doing above (looking at node with exceptional shift)
+
+# to show the name ofthe clade that has had the different shift
+
+plot_SS <- function(tre=NULL,SS=NULL,tax=NULL){
+  
+  
+  nodes <- as.numeric(rownames(SS$single.clades))
+  
+  pal <- wes_palette("Zissou1",n=length(nodes))
+  sp <- list()
+  for(i in nodes){
+    sp.i <- extract.clade(tre,i)$tip.label
+    
+    #print(head(tax))
+    sub.names <- lapply(tax,function(x) x[x%in%sp.i]) 
+    
+    in.clades <- lapply(sub.names,function(x) length(x)>0) 
+    all.of.clade <- lapply(sub.names,function(x) all(sapply(sp.i,function(z) z%in%x))) 
+    
+    high.clade <- names(sub.names)[last(which(all.of.clade==T))]
+    all.clades <- names(sub.names)[which(in.clades==T)]
+    crown <- ""
+    if(high.clade!=last(names(sub.names))) crown <- "crown-"
+    
+    sub.clades <- NULL
+    if(length(grepl("oidea",all.clades))>0) sub.clades <- all.clades[grepl("oidea",all.clades)]
+    
+    high.clade2 <- paste0(crown,high.clade,": ",paste0(sub.clades,collapse = "+"))
+    sp[[paste0(i)]] <- tibble(n=i,species=sp.i,clade=high.clade2)
+    
+  }
+  
+  
+  d <- do.call(rbind,sp)%>% 
+    rename(label=species) 
+  
+  d2<- d %>% rename(clade_name=clade) 
+  
+  p <- ggtree(tre)+ scale_y_reverse()
+  
+  p$data <- p$data %>% left_join(d) %>% left_join(tibble(node=nodes,SS$single.clades) %>% mutate(shift=ifelse(rate.difference>0,"+","-")))
+  
+  p <-  p+geom_tiplab(aes(col=clade),geom="text",size=1.2)+
+    geom_cladelab(data=d2,mapping=aes(node=n,col=clade_name,label=clade_name),offset=1,size=1.5)+
+    geom_hilight(data=d2,mapping = aes(node = n,fill=clade_name),alpha = 0.01)+
+    scale_fill_manual(values = pal)+
+    scale_color_manual(values = pal)+
+    theme(legend.position = "none")+geom_nodepoint(mapping=aes(subset = shift =="-"), size=5, shape=25,fill='blue',color='blue',alpha=0.7)+
+    geom_nodepoint(mapping=aes(subset = shift =="+"), size=5, shape=24, fill='red',color='red',alpha=0.7)
+  p <- p+xlim(NA,6)
+  res <- tibble(n=nodes,SS$single.clades) %>% left_join(d %>% select(n,clade) %>% unique)
+  
+  return(list(plot=p,res=res))
+  
+}
+
+tax.names <- readRDS("Lep_classification.RDS")
+
+hindPC1.res <- plot_SS(lep.tree2,hindPC1.SS,tax = tax.names)
+
+hindPC1.res$plot
+  # name of exceptional clade
+  # the exceptional shifts are indicated by triangles (blue and down for low 
+  # shifts, red and up for high shifts). in this case just blue down
+
+# to see if evolution of fore and hindwing shapes are correlated
+
+hindPC1.pic <- pic(hind.pc1,phy = lep.tree2)
+forePC1.pic <- pic(fore.pc1,phy = lep.tree2)
+
+PC1.pic <- tibble(
+  hind=hindPC1.pic,
+  fore=forePC1.pic
+)
+
+PC1.pic %>% 
+  ggplot(aes(x=fore,y=hind))+geom_point()+geom_smooth(method="lm")
+  # plotting PCs against each other, look pretty correlated
+summary(lm(hind~fore,PC1.pic))
+  # looking at R value to see if there is a significant relationship (R squared = .442 - so about 44% of variation in one can be explained by the other a lot! so yes shapes are pretty corrlated)
