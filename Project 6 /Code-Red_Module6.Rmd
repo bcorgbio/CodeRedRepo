@@ -199,13 +199,15 @@ After acquiring the PCA data, the phylogenetic tree of Lepidoptera was filtered 
 :::
 
 <center>
-
-```{r, echo=FALSE}
+```{r, fig.show='hide', display=FALSE}
 
 lep.tree <- ape::read.tree("lep_tree2.tre")
 
 plot(lep.tree,cex=0.1)
 
+```
+
+```{r, echo=FALSE, results='hide'}
 lep.tree <- ladderize(lep.tree)
 plot(lep.tree,cex=0.1)
 
