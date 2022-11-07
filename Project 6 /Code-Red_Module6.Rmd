@@ -97,7 +97,7 @@ outs <-  outs.l %>%
 
 <center>
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 #separate outlines by fore&hind wing
 forewings <- outs %>% 
   filter(wing =="forewing")
@@ -115,11 +115,12 @@ forewings %>%
   stack() #visualize forewings
 ```
 
+
 ***Figure 2. Visualization of Forewings using EFA after the size of the wings have been equalized***
 
 <center>
 
-```{r, echo=FALSE}
+```{r, display=FALSE, results='hide'}
 hind.min <- hindwings %>% 
   coo_nb() %>% 
   min()
@@ -127,9 +128,10 @@ hindwings %>%
    coo_interpolate(hind.min) %>% 
   coo_slide(id=1) %>% 
    coo_align()  %>%
-  fgProcrustes() %>%
-  stack() #visualize hindwings
+   fgProcrustes() %>%
+  stack()
 ```
+
 
 ***Figure 3. Visualization of Hindwings using EFA after the size of the wings have been equalized***
 
@@ -156,7 +158,7 @@ This allowed us to see the distribution of wing shapes for the forewing and the 
 
 <center>
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results='hide'}
 forewing.pca <- forewings %>%
   coo_interpolate(fore.min) %>%
    coo_align()  %>%
