@@ -33,28 +33,36 @@ This will be done by running a comparative phylogenetic analysis on the wing sha
 
 # Methods
 
-Images of about 200 species of Lepidoptera were acquired from the Global Biodiversity Information Facility (GBIF) and outlines were digitized using FIJI. In the subsequent analyses, file names were used in order to separate forewing from hindwing data.
-After digitization, a Procrustes transformation was performed in order to translate, rotate, and scale the outlines for better analysis of their shape without factoring in arbitrary wing size.
+Images of various species of Lepidoptera were digitized using FIJI.
+Because the initial outlines included both forewing and hindwing outlines for each species, these were separated using file names.
+Next, a Procrustes transformation wasperformed in order to translate, rotate, and scale the outlines for better analysis of their shape without factoring in arbitrary wing size.
 Elliptical Fourier Analysis (EFA) was performed in order to describe wing shapes.
-Principle Component Analysis (PCA) was then performed in order to minimize the number of variables explaining the variance in the data set. PCA data was visualized to determine the distribution of morphoshape of the wings of the different species as well as the amount of variance described by different variables.
+Principle Component Analysis (PCA) was then performed in order to minimize the number of variables explaining the variance in the data set.
+The functions for these analyses are included in the R package "Momocs." PCA data was visualized to determine the distribution of morphoshape of the wings of the different species as well as the amount of variance described by different variables.
 
 (insert relevant coding procedure here)
 
 To prepare the comparative analysis on the PCA data the phylogenetic tree was loaded positioned upper left.
 The file names of each species were also identified using the identifier data provided by Prof. Kenaley.
 The PC data was added to the identified species data accordingly.
-The phylogeny was modified to only include the species that were identified and had a PCA data.
+The phylogeny tree was modified to only include the species that were identified and had a PCA data.
 From here, the forewing and hindwing PC1 and PC2 were separated in different variable under the Brownian Motion.
 (insert relevant coding procedure here)
 
-To determine the evolutionary rates, "RRphylo" package was used to determine the rate of evolution based on wing shape, and any statistically significant shifts in shape evolution in the Lepidoptera's clades were identified.
+To determine the evolutionary rate, "RRphylo" package was used to determine the rate of evolution based on wing shape and from there, any statistically significant shift in shape evolution based on the Lepdioptera's clades were identified.
 The rate of the significant evolutionary shift was identified along with the name of clades.
 (insert relevant coding procedure here)
 
-The phylogenetic independent contrast was performed on the PC data to separate the original tip data independent of each other.
-The PC values of forewing and hindwing data were then compared via linear model and analyzed to see if a statistically significant value existed.
+The phylogenetic independent contrast was performed on the PC datas to separate the original tip data independent of each other.
+The PC values of forewing and hindwing data were then compared via linear model and analyzed to see if statistically significant value could be found.
 (insert relevant coding procedure here)
 
+<<<<<<< HEAD
+=======
+\*note from James: this is obviously very rough methods section.
+I'll try to refine it over the course of the next two days.
+
+>>>>>>> fd4d63dc30501b5a2ecac564941f2c566dce8c17
 # Results
 
 ## Shape Analysis
@@ -357,7 +365,7 @@ hindPC1.res$plot
 
 ## Shape Evolution Correlation
 
-```{r}
+```{r, PIC for PC1}
 hindPC1.pic <- pic(hind.pc1,phy = lep.tree2)
 forePC1.pic <- pic(fore.pc1,phy = lep.tree2)
 
@@ -374,10 +382,25 @@ summary(lm(hind~fore,PC1.pic))
 
 ```
 
+```{r, PIC for PC2}
+hindPC2.pic <- pic(hind.pc2,phy = lep.tree2)
+forePC2.pic <- pic(fore.pc2,phy = lep.tree2)
+PC2.pic <- tibble(
+  hind=hindPC2.pic,
+  fore=forePC2.pic
+)
+
+PC2.pic %>% 
+  ggplot(aes(x=fore,y=hind))+geom_point()+geom_smooth(method="lm") #plot PIC PC2
+
+summary(lm(hind~fore,PC2.pic)) #Find R-square
+
+```
+
 # Discussion
 
 # Author Contributions
-
+Tingwe - Wing tracing, Rmd Setup, preprocessing up to EFA, PIC for PC2, 
 Justin - Wing Tracing, PCA Analysis, Results, Discussion
 Liz - Wing tracing, Introduction, Methods
 
