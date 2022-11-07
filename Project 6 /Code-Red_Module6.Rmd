@@ -183,7 +183,7 @@ hindwing.pca %>%
   plot_PCA(title = "hindwings")
 ```
 
-***Figure 4. PCA analysis of forewings***
+***Figure 5. PCA analysis of hindwings***
 
 ## Comparative Analysis
 
@@ -283,7 +283,7 @@ names(fore.pc2) <-  forewing.pca2 %>%
   pull(species)
 ```
 
-***Figure 5. Adjusted phylogenetic tree of Lepidoptera included in the study***
+***Figure 6. Adjusted phylogenetic tree of Lepidoptera included in the study***
 
 ```{r, echo=FALSE}
 library(phytools)
@@ -402,7 +402,7 @@ forePC1.res$plot
 forePC1.res$res
 ```
 
-***Figure 6. Significant evolutionary rate found in the Lepidoptera phylogeny***
+***Figure 7. Significant evolutionary rate found in the Lepidoptera phylogeny***
 
 ## Shape Evolution Correlation
 
@@ -429,7 +429,7 @@ summary(lm(hind~fore,PC1.pic))
 
 ```
 
-***Figure 7. Phylogenetic Independent Contrast of PC1***
+***Figure 8. Phylogenetic Independent Contrast of PC1***
 
 <center>
 ### PC2
@@ -447,7 +447,7 @@ PC2.pic %>%
 summary(lm(hind~fore,PC2.pic)) #Find R-square
 
 ```
-***Figure 8. Phylogenetic Independent Contrast of PC2***
+***Figure 9. Phylogenetic Independent Contrast of PC2***
 
 # Discussion
 We first compared the rate of wing-shape evolution between forewings and hindwings. Evolutionary rates calculated from PC1 for forewings and hindwings differed by 35.56%, whereas evolutionary rates calculated from PC2 differed by 87.11%. There seems to be a significant shift in evolutionary rates between forewing and hindwing. 
