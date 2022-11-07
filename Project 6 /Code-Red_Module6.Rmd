@@ -28,10 +28,7 @@ library(RRphylo)
 # Introduction
 
 The Lepidoptera are an order of insects compromised of nearly 160,000 species of butterflies and moths.They have both forewings and hindwings, each playing roles in functions such as flying and attracting mates.
-Previous studies have found that if the hindwings of a moth or butterfly are removed, the insect can fly but its ability for linear and turning acceleration is greatly hindered [@jantzen2008hindwings].
-Based on these findings, it can be concluded that Lepidoptera hindwing shape is due to selection for improved flight maneuverability.
-Further studies suggest that selection for forewing shape is determined by flight ability, while selection for hindwing shape is determined by several possibilities, such as neutral selection, sexual selection, and predator avoidance (Sourakov 2013, Barber et al. 2015, Willmott et al. 2017, Rubin et al. 2018, Chazot et al. 2016).
-While these studies show that Lepidoptera forewings and hindwings have evolved different functions, there is still much that is not known about their evolutionary history.The purpose of this study is to determine whether Lepidoptera forewings and hindwings vary in their evolutionary rates, if different lineages have evolved at significantly different rates, and if forewing and hindwing shapes are correlated.
+Previous studies have found that if the hindwings of a moth or butterfly are removed, the insect can fly but its ability for linear and turning acceleration is greatly hindered [@jantzen2008hindwings]. Based on these findings, it can be concluded that Lepidoptera hindwing shape is due to selection for improved flight maneuverability. Further studies suggest that selection for forewing shape is determined by flight ability, while selection for hindwing shape is determined by several possibilities, such as neutral selection, sexual selection, and predator avoidance (Sourakov 2013, Barber et al. 2015, Willmott et al. 2017, Rubin et al. 2018, Chazot et al. 2016). While these studies show that Lepidoptera forewings and hindwings have evolved different functions, there is still much that is not known about their evolutionary history.The purpose of this study is to determine whether Lepidoptera forewings and hindwings vary in their evolutionary rates, if different lineages have evolved at significantly different rates, and if forewing and hindwing shapes are correlated.
 This will be done by running a comparative phylogenetic analysis on the wing shape data of more than 200 species of Lepidoptera, using the phylogeny provided by @kawahara2019phylogenomics.
 
 # Methods
@@ -123,7 +120,7 @@ hindwings %>%
   stack() #visualize hindwings
 ```
 
-```{r,EFA --> PCA}
+```{r,EFA --> PCA, results='hide'}
 forewings %>%
   coo_interpolate(fore.min) %>% 
    coo_align()  %>%
@@ -137,7 +134,7 @@ hindwings %>%
   efourier(norm=FALSE) 
 ```
 
-```{r, PCA}
+```{r, PCA,results='hide'}
 forewing.pca <- forewings %>%
   coo_interpolate(fore.min) %>%
    coo_align()  %>%
@@ -195,7 +192,7 @@ forewing.pca2 <-  tibble(xy.file=basename(rownames(forewing.pca$x)),PC1=forewing
 
 ## Evolutionary Rates
 
-```{r, }
+```{r}
 drops <- lep.tree$tip.label[!lep.tree$tip.label%in%unique(out.data$species)]
 
 lep.tree2 <- drop.tip(lep.tree,drops)
@@ -253,20 +250,28 @@ names(fore.pc2) <-  forewing.pca2 %>%
   pull(species)
 ```
 
-```{r, load, include = FALSE}
+```{r, evorates Brownie}
 library(phytools)
 forePC1.BM<-brownie.lite(lep.tree2,fore.pc1*10)
 hindPC1.BM<-brownie.lite(lep.tree2,hind.pc1*10)
-
 forePC2.BM<-brownie.lite(lep.tree2,fore.pc2*10)
 hindPC2.BM<-brownie.lite(lep.tree2,hind.pc2*10)
 
+#Evolutionary rates of fore/hindwing
+forePC1.BM$sig2.single
+hindPC1.BM$sig2.single
+
+forePC2.BM$sig2.single
+hindPC2.BM$sig2.single
 ```
 
+## Shifts in Evolutionary Rates
 ```{r, }
 library(RRphylo)
 hindPC1.RR <- RRphylo(tree=lep.tree2,y=hind.pc1)
 hindPC1.SS<- search.shift(RR=hindPC1.RR,status.type="clade")
+forePC1.RR <- RRphylo(tree=lep.tree2,y=fore.pc1)
+forePC1.SS<- search.shift(RR=forePC1.RR,status.type="clade")
 
 plot(lep.tree2)
 nodelabels(node = as.numeric(rownames(hindPC1.SS$single.clades)),text = rownames(hindPC1.SS$single.clades))
@@ -274,11 +279,10 @@ nodelabels(node = as.numeric(rownames(hindPC1.SS$single.clades)),text = rownames
 hindPC1.plot <- plotShift(RR=hindPC1.RR,SS=hindPC1.SS)
 
 forePC1.plot <- plotShift(RR=hindPC1.RR,SS=hindPC1.SS)
+
 hindPC1.plot$plotClades()
-
+forePC1.plot$plotClades()
 ```
-
-## Shape Evaluation Correlation
 
 ```{r, load libraries and define funtion, include= FALSE}
 if (!require("BiocManager", quietly = TRUE))
@@ -348,13 +352,17 @@ plot_SS <- function(tre=NULL,SS=NULL,tax=NULL){
 tax.names <- readRDS("Lep_classification.RDS")
 
 hindPC1.res <- plot_SS(lep.tree2,hindPC1.SS,tax = tax.names)
+forePC1.res <- plot_SS(lep.tree2,forePC1.SS,tax = tax.names)
 
 hindPC1.res$plot
-
+hindPC1.res$res
+forePC1.res$plot
+forePC1.res$res
 ```
 
 ## Shape Evolution Correlation
 
+### PC1
 ```{r, PIC for PC1}
 hindPC1.pic <- pic(hind.pc1,phy = lep.tree2)
 forePC1.pic <- pic(fore.pc1,phy = lep.tree2)
@@ -372,6 +380,7 @@ summary(lm(hind~fore,PC1.pic))
 
 ```
 
+### PC2
 ```{r, PIC for PC2}
 hindPC2.pic <- pic(hind.pc2,phy = lep.tree2)
 forePC2.pic <- pic(fore.pc2,phy = lep.tree2)
@@ -388,10 +397,12 @@ summary(lm(hind~fore,PC2.pic)) #Find R-square
 ```
 
 # Discussion
+We first compared the rate of wing-shape evolution between forewings and hindwings. Evolutionary rates calculated from PC1 for forewings and hindwings differed by 35.56%, whereas evolutionary rates calculated from PC2 differed by 87.11%. There seems to be a significant shift in evolutionary rates between forewing and hindwing. 
+Because forewing and hindwing were found to have different evolutionary rates, we examined shift in evolutionary rates of major lineages as it pertains to both hind- and forewing PC1. Results obtained from both agreed with each other, in that the clade Macroheterocera: Noctuoidea underwent a downward shift in wing-shape evolutionary rate. 
+Next, to study fore- and hindwing shape correlation, we examined PC1 and PC2 transformed with phylogenetic information for both. PIC analysis on fore- and hindwing PC1 showed significant correlation (R-squared: 0.4476), whereas PIC analysis using PC2 found no significant correlation (R-squared: 0.00408). 
 
 # Author Contributions
-
-Tingwei - Wing tracing, Discussion, Rmd Setup, preprocessing up to EFA, PCA revision, PIC for PC2 
+Tingwei - Discussion, Rmd Setup, preprocessing up to EFA, PCA revision, PIC for PC2
 Justin - Wing Tracing, PCA Analysis, Results, Discussion
 
 # References
