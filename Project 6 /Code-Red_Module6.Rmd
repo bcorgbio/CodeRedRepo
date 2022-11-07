@@ -57,18 +57,15 @@ The phylogenetic independent contrast was performed on the PC datas to separate 
 The PC values of forewing and hindwing data were then compared via linear model and analyzed to see if statistically significant value could be found.
 (insert relevant coding procedure here)
 
-<<<<<<< HEAD
-=======
 \*note from James: this is obviously very rough methods section.
 I'll try to refine it over the course of the next two days.
 
->>>>>>> fd4d63dc30501b5a2ecac564941f2c566dce8c17
 # Results
 
 ## Shape Analysis
 
 ```{r, preprocessing, results='hide'}
-#load data
+
 f <- list.files("class_out_data",pattern=".txt|.csv",full.names = TRUE)
 out <- read_delim(f[1],delim="\t") %>% 
   as.matrix()
@@ -76,32 +73,31 @@ out <- read_delim(f[1],delim="\t") %>%
 out %>% 
   list() %>% 
   Out() %>% 
-  coo_flipx() 
+  coo_flipx() %>% 
+  stack()
 ```
 
 ```{r, loading files & more preprocessing, results='hide'}
 #make a large df with vroom
 out.df <- vroom::vroom(f, id = "filename")
-
 #add wing info
 out.df <- out.df %>% 
   mutate(wing=gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(filename))) %>% 
   na.omit()
-
 #make list
 outs.l <- sapply(f,function(x) out.df %>% filter(filename==x) %>% select(X,Y) %>% as.matrix)
-
 #extract wing info
 wings <- gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(names(outs.l)))
 outs <-  outs.l %>% 
   Out(fac=list(wing=wings)) %>% 
-  coo_flipx() #visualize both wings uncorreced for size
+  coo_flipx() #visualize both wings uncorrected for size
 ```
 
-```{r, Separate and Procrustes transform both wings}
+```{r, Separate and Procrustes transform both wings, results='hide'}
 #separate outlines by fore&hind wing
 forewings <- outs %>% 
   filter(wing =="forewing")
+
 hindwings <- outs %>% 
   filter(wing =="hindwing")
 
@@ -125,7 +121,6 @@ hindwings %>%
 ```
 
 ```{r,EFA --> PCA}
-#Elliptical Fourier
 forewings %>%
   coo_interpolate(fore.min) %>% 
    coo_align()  %>%
@@ -140,7 +135,6 @@ hindwings %>%
 ```
 
 ```{r, PCA}
-#PCA
 forewing.pca <- forewings %>%
   coo_interpolate(fore.min) %>%
    coo_align()  %>%
@@ -156,13 +150,6 @@ hindwing.pca <-hindwings %>%
   fgProcrustes() %>% 
   efourier(norm=FALSE) %>% 
   PCA()
-
-hindwings %>% 
-   coo_interpolate(hind.min) %>% 
-   coo_align()  %>%
-   coo_slide(id=1) %>% 
-  fgProcrustes() %>% 
-  stack
 
 forewing.pca %>% 
   plot_PCA(title = "forewings")
@@ -400,8 +387,7 @@ summary(lm(hind~fore,PC2.pic)) #Find R-square
 # Discussion
 
 # Author Contributions
-Tingwe - Wing tracing, Rmd Setup, preprocessing up to EFA, PIC for PC2, 
+Tingwei - Wing tracing, Discussion, Rmd Setup, preprocessing up to EFA, PCA revision, PIC for PC2
 Justin - Wing Tracing, PCA Analysis, Results, Discussion
-Liz - Wing tracing, Introduction, Methods
 
 # References
