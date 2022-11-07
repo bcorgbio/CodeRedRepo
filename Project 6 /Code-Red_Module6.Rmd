@@ -32,7 +32,8 @@ The Lepidoptera are an order of insects compromised of nearly 160,000 species of
 Previous studies have found that if the hindwings of a moth or butterfly are removed, the insect can fly but its ability for linear and turning acceleration is greatly hindered [@jantzen2008hindwings].
 Based on these findings, it can be concluded that Lepidoptera hindwing shape is due to selection for improved flight maneuverability.
 Further studies suggest that selection for forewing shape is determined by flight ability, while selection for hindwing shape is determined by several possibilities, such as neutral selection, sexual selection, and predator avoidance (Sourakov 2013, Barber et al. 2015, Willmott et al. 2017, Rubin et al. 2018, Chazot et al. 2016).
-While these studies show that Lepidoptera forewings and hindwings have evolved different functions, there is still much that is not known about their evolutionary history. The purpose of this study is to determine whether Lepidoptera forewings and hindwings vary in their evolutionary rates, if different lineages have evolved at significantly different rates, and if forewing and hindwing shapes are correlated.
+While these studies show that Lepidoptera forewings and hindwings have evolved different functions, there is still much that is not known about their evolutionary history.
+The purpose of this study is to determine whether Lepidoptera forewings and hindwings vary in their evolutionary rates, if different lineages have evolved at significantly different rates, and if forewing and hindwing shapes are correlated.
 This will be done by running a comparative phylogenetic analysis on the wing shape data of more than 200 species of Lepidoptera, using the phylogeny provided by @kawahara2019phylogenomics.
 
 # Methods
@@ -456,7 +457,9 @@ summary(lm(hind~fore,PC2.pic)) #Find R-square
 
 # Discussion
 
-Various studies have been done to analyze the macroevolutionary history of Lepidopteran forewings and hindwings. One study by @le2019adaptive links morphology with natural selection, but there is little information known about rates of evolution and correlation of wing shapes. In this study, we aimed to answer some of these questions about evolutionary history.
+Various studies have been done to analyze the macroevolutionary history of Lepidopteran forewings and hindwings.
+One study by @le2019adaptive links morphology with natural selection, but there is little information known about rates of evolution and correlation of wing shapes.
+In this study, we aimed to answer some of these questions about evolutionary history.
 We first compared the rate of wing-shape evolution between forewings and hindwings.
 Evolutionary rates calculated from PC1 for forewings and hindwings differed by 35.56%, whereas evolutionary rates calculated from PC2 differed by 87.11%, indicating a significant shift in evolutionary rates between forewing and hindwing.
 Because forewing and hindwing were found to have different evolutionary rates, we examined shift in evolutionary rates of major lineages as it pertains to both hind- and forewing PC1.
