@@ -55,13 +55,12 @@ The phylogenetic independent contrast was performed on the PC data to separate t
 The PC values of forewing and hindwing data were then compared via linear model and analyzed to see if a statistically significant value existed.
 (insert relevant coding procedure here)
 
-
 # Results
 
 ## Shape Analysis
 
 ```{r, preprocessing, results='hide'}
-
+#load data
 f <- list.files("class_out_data",pattern=".txt|.csv",full.names = TRUE)
 out <- read_delim(f[1],delim="\t") %>% 
   as.matrix()
@@ -69,19 +68,21 @@ out <- read_delim(f[1],delim="\t") %>%
 out %>% 
   list() %>% 
   Out() %>% 
-  coo_flipx() %>% 
-  stack()
+  coo_flipx() 
 ```
 
 ```{r, loading files & more preprocessing, results='hide'}
 #make a large df with vroom
 out.df <- vroom::vroom(f, id = "filename")
+
 #add wing info
 out.df <- out.df %>% 
   mutate(wing=gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(filename))) %>% 
   na.omit()
+
 #make list
 outs.l <- sapply(f,function(x) out.df %>% filter(filename==x) %>% select(X,Y) %>% as.matrix)
+
 #extract wing info
 wings <- gsub("XY_.+_(hindwing|forewing)\\..+","\\1",basename(names(outs.l)))
 outs <-  outs.l %>% 
@@ -93,7 +94,6 @@ outs <-  outs.l %>%
 #separate outlines by fore&hind wing
 forewings <- outs %>% 
   filter(wing =="forewing")
-
 hindwings <- outs %>% 
   filter(wing =="hindwing")
 
@@ -117,6 +117,7 @@ hindwings %>%
 ```
 
 ```{r,EFA --> PCA}
+#Elliptical Fourier
 forewings %>%
   coo_interpolate(fore.min) %>% 
    coo_align()  %>%
@@ -131,6 +132,7 @@ hindwings %>%
 ```
 
 ```{r, PCA}
+#PCA
 forewing.pca <- forewings %>%
   coo_interpolate(fore.min) %>%
    coo_align()  %>%
@@ -377,5 +379,6 @@ summary(lm(hind~fore,PC1.pic))
 # Author Contributions
 
 Justin - Wing Tracing, PCA Analysis, Results, Discussion
+Liz - Wing tracing, Introduction, Methods
 
 # References
