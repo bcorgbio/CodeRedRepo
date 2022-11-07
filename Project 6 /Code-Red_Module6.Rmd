@@ -135,7 +135,7 @@ hindwings %>%
 ***Figure 3. Visualization of Hindewings using EFA after the size of the wings have been equalized***
 
 <center>
-```{r, include=FALSE}
+```{r, include=FALSE, results='hide'}
 forewings %>%
   coo_interpolate(fore.min) %>% 
    coo_align()  %>%
