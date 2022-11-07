@@ -483,6 +483,6 @@ Justin - Wing Tracing, PCA Analysis, Results, Discussion, Formatting
 
 Liz -
 
-James -
+James - Introduction, Methods, Results, Formatting
 
 # References
