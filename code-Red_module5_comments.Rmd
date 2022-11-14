@@ -1,0 +1,91 @@
+---
+title: "code-Red_module5"
+author: "code-Red"
+date: "2022-10-04"
+output: html_document
+bibliography: BIOL2140.bib
+nocite: '@*'
+---
+
+```{r,include=FALSE}
+library(tidyverse) 
+library(knitr) 
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<!-- for comments -->
+<style>
+div.comment pre { background-color:#ffbbbb; }
+div.comment pre.r { background-color:#ffbbbb; }
+div.comment {color: red;}
+</style>
+
+# Introduction
+
+The purpose of this project was to determine whether human body temperature varies according to activity level within individuals. A study done by @wunder1974effect revealed that the body temperature of Ord's kangaroo rat was higher during times of activity than inactivity. In order to determine whether a similar relationship exists in humans, temperature was recorded in 4 subjects during 5 minutes of rest (sitting on a couch) and 5 minutes of activity (jumping jacks). The results were plotted in order to determine whether there is a significant difference in human body temperature when active versus inactive.
+
+# Methods
+
+An Arduino DHT11 temperature sensor was set up following the instruction and file provided by @ada_2012 and was further modified to measure body temperature over time. The sensor was placed in the armpit of each group member to measure their axillary body temperature (°C) during periods of activity and inactivity. Body temperature was recorded 100 seconds after sitting on the couch and after five minutes of jumping jacks. The collected data was then plotted using a boxplot model in order to compare the active and at rest body temperatures across all the group members.
+
+```{r, "Join Data into a Table", message=FALSE}
+
+dat.f <- list.files(pattern = "couch|active.csv")
+
+dat.l <- list() 
+for(i in dat.f){
+  met.dat<- unlist(strsplit(i,"_")) 
+  who <- met.dat[1] 
+  activity <- gsub(".csv","",met.dat[2])
+  dat.l[[i]]<- read_csv(i)%>%
+    mutate(who=who,activity=activity) 
+}
+
+dat <- do.call(rbind,dat.l) #combine the list into table
+dat
+```
+
+
+# Results
+```{r, "Plot Data"}
+dat%>%
+  ggplot()+geom_boxplot(aes(x=activity,y=degC))+facet_grid(.~who)+
+  labs(caption = "Figure 1: Mean Body Temperature Between Activity Type By Subject") +
+  theme(plot.caption = element_text(hjust=0.5))
+```
+
+The mean axial temperature between activity levels differed significantly in every subject, in that a decrease in temperature was observed after 5 minutes of jumping-jacks comparing to resting. This is indicated by the mean temperature between activity levels consistently falling out of each others' ±1 standard deviation within each subject.
+
+
+# Discussion
+
+<<<<<<< HEAD
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. The difference in mean body temperature between activity levels reflected by our data is congruent with @hoffmann201224, who found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. However, the mean body temperatures extrapolated from our data, especially for the resting condition, seem to be erroneously low to the point where they are physiologically implausible (all < 34°C). This could indicate systemic errors during data collection. For example, axial temperature readings were taking under the armpit through clothing fabric for sanitary purposes, which could have resulted in slower heat transduction during the start of each trial. To further improve our study we could record temperature during the time of the exercise and compare it to the rest temperature to observe if the temperature would equalize due to our endothermic physiology.
+
+=======
+As endotherms, humans maintain a constant body temperature independent of the environment, but slight variations as a result of activity are not unheard of. @hoffmann201224 found a difference of more than 1°C between peak measurement right after a 20min exercise and minimum sleep temperature within 24 hours. However, the mean body temperatures from our data showed significantly higher values in the resting condition than the active condition, which was unexpected and incongruent with @hoffmann201224. This could have been caused by evaporative cooling from sweating after the exercise. Alternatively, temperature readings were taking under the armpit through clothing fabric for sanitary purposes, which could have resulted in air cooling due to constant movement and slower heat transduction during the start of each trial. To further improve our study, we could record temperature using ingestible temperature capsule during the time of the exercise and compare it to the rest temperature to observe if the temperature would equalize due to our endothermic physiology.
+>>>>>>> 299627b24c23ad0f4578e6f39af981ff334749fb
+
+# Author Contributions
+Justin Lau - Arduino code, recording data, methods, plotting data\
+Tingwei Hu - discussion & bib, edited Rmd setup, plot caption, Arduino setup (w/ Justin)\
+<<<<<<< HEAD
+Jinseo Kim - bib, methods revision, discussion revision
+=======
+Jinseo Kim - bib, methods revision, discussion revision\
+>>>>>>> 299627b24c23ad0f4578e6f39af981ff334749fb
+Liz Asprinio - Introduction, methods, bibliography
+
+
+<div class="comment">
+Top notch stuff. Looks great. Just see some gitting history in the the text. Did you have some issues. 
+
+15/15
+
+</div>
+
+# References
