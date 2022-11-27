@@ -27,9 +27,8 @@ last few sentences r exactly from his writing so ill fix them up
 
 
 # Methods
-Still under construction.
-Maximum isometric voluntary contraction force was measured for each subject (n=34) at 11-12 different elbow angles (range:45 to 157.5 degrees, in varying increments) for both fatigue and control conditions. Fatigue was considered reached after performing 3 minutes of continuous isokinetic controlled drops of a heavy object, which weights >=1/3 of maximum isometric force in control experiment. Both the control and fatigue experiments were conducted on the same arm in each respective subject. 
-We first normalized isometric force in each subject by representing the force at each angle as a fraction of the highest force measured in that subject under the same condition. 
+Maximum isometric voluntary contraction force was measured for each subject (n=34) at 11-12 different elbow angles (range:45 to 157.5 degrees, in varying increments) for both fatigue and control conditions. Fatigue was considered reached after performing 3 minutes of continuous isokinetic controlled drops of a heavy object, which weights >=1/3 of maximum isometric force in control experiment. Both the control and fatigue experiments were conducted on the same arm in each respective subject.  
+We first normalized isometric force in each trial by representing the force at each angle as a fraction of the highest force measured in that subject under the same condition. We then conducted model fitting using second, third, and fourth order for force and angle relationship, and calculated the AIC scores for each combination of subject and experiment. We also predicted maximum elbow angle at which maximum MVC force occurs (theta_max) using all three models mentioned above. Then, we kept only the theta_max values corresponding to the best fitting model in each condition. Lastly, we conducted an analysis of variance (ANOVA) to check whether mean theta_max differ significantly between fatigue and control conditions, and then calculated the mean and SEM of shift in theta_max. 
 ```{r, Read files and data tidying,message=FALSE}
 dat.f <- list.files(path="./Project8_data") #pls don't move the data folder
 
@@ -54,19 +53,74 @@ for(i in dat.f){
   )
 }
 dat <- do.call(rbind,dat.l)
+#This took an ungodly amount of time to figure out...
 dat.p <- dat %>% #processing all the data
   group_by(exp,subject) %>% 
   mutate(force=force/max(force)) %>% 
   print() #sanity check
+```
 
-#This took an ungodly amount of time to figure out...
+```{r,cleanup,include=FALSE}
+dat.p2 <- dat.p %>% 
+  na.omit()
+```
+
+```{r, AIC fitting, message=FALSE}
+AICs <- dat.p2%>%
+  group_by(subject,exp)%>%
+  summarize(
+    m2=AICc(lm(force~poly(ang,2))), #second order
+    m3=AICc(lm(force~poly(ang,3))), #third order
+    m4=AICc(lm(force~poly(ang,4))) #fourth order
+  )%>%
+  pivot_longer(m2:m4,names_to="model",values_to="AICc")
+```
+
+```{r, theta max, message=FALSE}
+x.pred <- seq(45,157.5,length.out = 1000)
+fits <- dat.p2%>%
+  group_by(subject,exp)%>%
+  summarize(
+    m2=predict(lm(force~poly(ang,2)),newdata=data.frame(ang=x.pred)), #second order
+    m3=predict(lm(force~poly(ang,3)),newdata=data.frame(ang=x.pred)), #third order
+    m4=predict(lm(force~poly(ang,4)),newdata=data.frame(ang=x.pred)) #fourth order
+  )%>%
+   pivot_longer(m2:m4,names_to="model")%>%
+   group_by(subject,exp,model)%>%
+   summarize(theta_max=x.pred[which.max(value)])
 ```
 
 # Results
+Visualizing normalized data.
 ```{r, plotting data}
-dat.p %>%
-  na.omit() %>% 
+dat.p2 %>%
   ggplot(aes(ang,force,col=exp))+geom_point() #visualize
+```
+
+Model prediction filtered by best fit.
+```{r,model prediction filtered by best fit, message=FALSE}
+best.models <- fits%>%
+  left_join(AICs)%>%
+  group_by(subject,exp)%>%
+  mutate(best=AICc==min(AICc))%>%
+  filter(best==TRUE)%>%
+  dplyr::select(-best)%>%
+  print()
+```
+
+ANOVA for theta_max in fatigue and control conditions. 
+```{r,anova}
+anova(lm(theta_max~exp,best.models))
+```
+
+Mean shift and SEM of shift. 
+```{r, mean shift & SE}
+best.models%>%
+  pivot_wider(id_cols=subject,names_from = exp,values_from=theta_max)%>%
+  mutate(shift=fatigue-control) %>% 
+  ungroup() %>%
+  na.omit() %>% 
+  summarise(mean.shift=mean(shift),se.shift=sd(shift)/sqrt(length(shift)))
 ```
 
 # Discussion
@@ -74,7 +128,7 @@ dat.p %>%
 
 
 # Author Contribution
-Tingwei Hu - Doc setup, read files, plot initial data, methods
+Tingwei Hu - Setup, read files, plot initial data, data analysis code in methods and results
 
 
 
