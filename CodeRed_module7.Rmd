@@ -8,19 +8,13 @@ nocite: '@*'
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
 ```
 
 ```{r, packages, include=FALSE}
 library(tidyverse)
 library(knitr)
-library(vroom)
 library(MuMIn)
-```
-
-```{r, Read files and data tidying, include=FALSE}
-
-
 ```
 
 # Introduction
@@ -33,22 +27,54 @@ last few sentences r exactly from his writing so ill fix them up
 
 
 # Methods
+Still under construction.
+Maximum isometric voluntary contraction force was measured for each subject (n=34) at 11-12 different elbow angles (range:45 to 157.5 degrees, in varying increments) for both fatigue and control conditions. Fatigue was considered reached after performing 3 minutes of continuous isokinetic controlled drops of a heavy object, which weights >=1/3 of maximum isometric force in control experiment. Both the control and fatigue experiments were conducted on the same arm in each respective subject. 
+We first normalized isometric force in each subject by representing the force at each angle as a fraction of the highest force measured in that subject under the same condition. 
+```{r, Read files and data tidying,message=FALSE}
+dat.f <- list.files(path="./Project8_data") #pls don't move the data folder
 
+dat.l <- list()
 
+for(i in dat.f){
+  metadata <- unlist(strsplit(i,'_'))
+  subj <- metadata[2]
+  ang <- metadata[3]
+  exp <- gsub('.csv','',metadata[4])
+  trial.force <- read_csv(paste0('Project8_data/',i),col_names=FALSE)
+  trial.force$X1 <- gsub("[a-zA-Z :]","",trial.force$X1)
+  mvcf <- trial.force %>% 
+    pull(X1) %>% 
+    as.numeric() %>% 
+    mean()
+  dat.l[[i]] <- tibble(
+    subject=subj,
+    ang=as.numeric(ang),
+    exp=exp,
+    force=mvcf
+  )
+}
+dat <- do.call(rbind,dat.l)
+dat.p <- dat %>% #processing all the data
+  group_by(exp,subject) %>% 
+  mutate(force=force/max(force)) %>% 
+  print() #sanity check
 
-
+#This took an ungodly amount of time to figure out...
+```
 
 # Results
-
-
-
+```{r, plotting data}
+dat.p %>%
+  na.omit() %>% 
+  ggplot(aes(ang,force,col=exp))+geom_point() #visualize
+```
 
 # Discussion
 
 
 
 # Author Contribution
-
+Tingwei Hu - Doc setup, read files, plot initial data, methods
 
 
 

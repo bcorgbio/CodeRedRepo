@@ -105,3 +105,18 @@ for(i in sub){
 dat <- do.call(rbind,dat.l)
 
 dat
+
+dat%>%
+  ggplot(aes(ang,force,col=exp))+geom_point()
+
+AICs <- dat%>%
+  group_by(subject,exp)
+
+AICs%>%
+  summarize(
+    m2=AICc(lm(force~poly(ang,2))), #second order
+    m3=AICc(lm(force~poly(ang,3))), #third order
+    m4=AICc(lm(force~poly(ang,4))) #fourth order
+  ) %>% 
+  print()
+
