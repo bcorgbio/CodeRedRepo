@@ -25,9 +25,9 @@ library(MuMIn)
 
 # Introduction
 
-
-
-
+The muscle force-length relationship is governed by several factors. One aspect is the number of crossbridges formed in the regions of actin-myosin overlap of a sarcomere, which is directly related to the maximum amount of isometric force that can be produced by the muscle. Another aspect is mechanical advantage, the ratio between input (L_i) and output (L_o) force:
+				$$MA = L_i/L_o$$
+Greater mechanical advantage is described by a smaller ratio, or moving a load using a relatively small force. In the human body, this concept is illustrated by bones and joints acting as levers and pivots to minimize the force required by muscles to move a load. The arm is a lever and has a mechanical advantage of 0.2. However, the insertion angle of the muscles changes as the forearm flexes, which also contributes to output force. This complicates the study of force-length relationships, but research has shown that output force is sufficient to determine force-length relationships in input muscles (@rassier1999length).
 
 # Methods
 
