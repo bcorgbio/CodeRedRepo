@@ -28,6 +28,9 @@ library(MuMIn)
 The muscle force-length relationship is governed by several factors. One aspect is the number of crossbridges formed in the regions of actin-myosin overlap of a sarcomere, which is directly related to the maximum amount of isometric force that can be produced by the muscle. Another aspect is mechanical advantage, the ratio between input (L_i) and output (L_o) force:
 				$$MA = L_i/L_o$$
 Greater mechanical advantage is described by a smaller ratio, or moving a load using a relatively small force. In the human body, this concept is illustrated by bones and joints acting as levers and pivots to minimize the force required by muscles to move a load. The arm is a lever and has a mechanical advantage of 0.2. However, the insertion angle of the muscles changes as the forearm flexes, which also contributes to output force. This complicates the study of force-length relationships, but research has shown that output force is sufficient to determine force-length relationships in input muscles (@rassier1999length).
+In this project, the force-length relationship in the human arm and its response to fatigue will be studied. Isometric force-angle curves for the human forearm flexors undertaking maximum voluntary contractions (MVCs) will be constructed, and the angles at which maximum isometric force (Fmax) occur (θmax) between non-fatigued (i.e., control) and eccentrically fatigued forearm flexors will be compared.Research has shown that the force-length/angle relationship shifts after eccentric fatigue, and the underlying mechanisms of this shift will be discussed.
+last few sentences r exactly from his writing so ill fix them up
+
 
 # Methods
 
