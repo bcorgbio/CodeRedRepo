@@ -1,0 +1,52 @@
+---
+title: "CodeRed_Module7"
+author: "Liz Asprinio, Tingwei Hu, James Kim, Justin Lau"
+date: "2022-11-27"
+output: html_document
+bibliography: BIOL3140_m7.bib
+nocite: '@*'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, packages, include=FALSE}
+library(tidyverse)
+library(knitr)
+library(vroom)
+library(MuMIn)
+```
+
+```{r, Read files and data tidying, include=FALSE}
+
+
+```
+
+# Introduction
+
+
+
+
+
+# Methods
+
+
+
+
+
+# Results
+
+
+
+
+# Discussion
+
+
+
+# Author Contribution
+
+
+
+
+# References
