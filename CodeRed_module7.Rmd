@@ -24,8 +24,8 @@ Greater mechanical advantage is described by a smaller ratio, or moving a load u
 In this project, the force-length relationship of input muscles in the human arm and their response to fatigue will be studied. First, human forearm flexors will undertake maximum voluntary contractions (MVCs) and isometric force-angle curves will be constructed from these data. Next, the angles at which maximum isometric force (Fmax) occur (θmax) between non-fatigued (control) and eccentrically fatigued forearm flexors will be compared. Lastly, the mechanisms underlying the shift in the force-length/angle relationship after eccentric fatigue will be discussed.
 
 # Methods
-Maximum isometric voluntary contraction force was measured for each subject (n=34) at 11-12 different elbow angles (range:45 to 157.5 degrees, in varying increments) for both fatigue and control conditions. Fatigue was considered reached after performing 3 minutes of continuous isokinetic controlled drops of a heavy object, which weights >=1/3 of maximum isometric force in control experiment. Both the control and fatigue experiments were conducted on the same arm in each respective subject.  
-We first normalized isometric force in each trial by representing the force at each angle as a fraction of the highest force measured in that subject under the same condition. We then conducted model fitting using second, third, and fourth order for force and angle relationship, and calculated the AIC scores for each combination of subject and experiment. We also predicted maximum elbow angle at which maximum MVC force occurs (theta_max) using all three models mentioned above. Then, we kept only the theta_max values corresponding to the best fitting model in each condition. Lastly, we conducted an analysis of variance (ANOVA) to check whether mean theta_max differ significantly between fatigue and control conditions, and then calculated the mean and SEM of shift in theta_max. 
+Maximum isometric voluntary contraction force was measured for each subject (n=34) at 11-12 different elbow angles (range:45 to 157.5 degrees, in varying increments). There were to comparative groups which included the control and the fatigue group. The control group underwent the isometric voluntary contraction at different angles without expending the muscle prior to the measured contraction. The fatigue group underwent the same process after the muscle was fatigued prior to the measured contraction. Muscle fatigue was considered to bve reached after performing 3 minutes of continuous isokinetic controlled drops of a heavy object, which weighted >=1/3 of maximum isometric force in control experiment. Both the control and fatigue experiments were conducted on the same arm in each respective subject.  
+We first normalized isometric force in each trial by representing the force at each angle as a fraction of the highest force measured in that subject under the same condition. We then conducted model fitting using second, third, and fourth order for force and angle relationship. which was followed by AIC analysis for each combination of the subject and experiment. We also predicted maximum elbow angle at which maximum MVC force occurs (theta_max) using all three models mentioned above. Then, we kept only the theta_max values corresponding to the best fitting model in each condition. Lastly, we conducted an analysis of variance (ANOVA) to check whether mean theta_max differ significantly between fatigue and control conditions, and then calculated the mean and SEM of shift in theta_max. 
 ```{r, Read files and data tidying,message=FALSE}
 dat.f <- list.files(path="./Project8_data") #pls don't move the data folder
 
@@ -88,13 +88,25 @@ fits <- dat.p2%>%
 ```
 
 # Results
-Visualizing normalized data.
+The visualization of the normalized graph is shown below. As it will be discussed later on, although the shape of the data does not follow the predicted FL relationship, the expected trend of the control group having higher force output regardless of the angle could be observed.
+
+<center>
+
 ```{r, plotting data}
 dat.p2 %>%
   ggplot(aes(ang,force,col=exp))+geom_point() #visualize
 ```
 
-Model prediction filtered by best fit.
+***Figure 1. Visualization of the normalized force-length relationship data of contorl and fatigue groups***
+
+<center>
+
+::: {style="text-align: left"}
+Model prediction filtered by best fit through the AIC analysis is shown below.
+:::
+
+<center>
+
 ```{r,model prediction filtered by best fit, message=FALSE}
 best.models <- fits%>%
   left_join(AICs)%>%
@@ -105,12 +117,24 @@ best.models <- fits%>%
   print()
 ```
 
-ANOVA for theta_max in fatigue and control conditions. 
+<center>
+
+::: {style="text-align: left"}
+ANOVA for theta_max in fatigue and control conditions for the best model was then produced.
+:::
+
+<center>
+
 ```{r,anova}
 anova(lm(theta_max~exp,best.models))
 ```
 
-Mean shift and SEM of shift. 
+<center>
+
+Finally, the average difference between the control and fatigue group was calculated to derived the mean shift with SEM
+
+<center>
+
 ```{r, mean shift & SE}
 best.models%>%
   pivot_wider(id_cols=subject,names_from = exp,values_from=theta_max)%>%
@@ -120,15 +144,23 @@ best.models%>%
   summarise(mean.shift=mean(shift),se.shift=sd(shift)/sqrt(length(shift)))
 ```
 
+<center>
+
 # Discussion
 
-The class-wide force-angle data for isometric MVC does not appear to follow a typical FL relationship under both control and fatigued conditions. A typical FL relationship posits that muscles generate the greatest force when at their ideal length and the least amount of force when shortened or stretched relative to the resting length. As such, at extreme angle values, a decrease in output force would be expected. However, with the class wide data, it appears that force steadily increases after an angle of 40 degrees, hits a max at around 110 degrees, and plateaus between 110 degrees and 160 degrees. In a typical FL relationship, as discussed by @article{rassier1999length, force should increase, plateau, and then drop off after the ideal angle is reached, but this was not the case with the class wide data. 
+The class-wide force-angle data for isometric MVC does not appear to follow a typical FL relationship under both control and fatigued conditions. A typical FL relationship posits that muscles generate the greatest force when at their ideal length and the least amount of force when shortened or stretched relative to the resting length. As such, at extreme angle values, a decrease in output force would be expected. However, with the class wide data, it appears that force steadily increases after an angle of 40 degrees, hits a max at around 110 degrees, and plateaus between 110 degrees and 160 degrees. In a typical FL relationship, as discussed by (@rassier1999length), force should increase, plateau, and then drop off after the ideal angle is reached, but this was not the case with the class wide data.
 
-There appears to be an approximately 22 degree shift between θmax of the controlled and fatigued groups. θmax for the control group sat between angles of approximately 135-140 degrees, while the θmax for the fatigued group was between 150-160 degrees. Based on the ANOVA for θmax in control and fatigue conditions, it was seen that the difference was significant with a p-value < 0.05 of 0.004775.
+Despite the experimental data not matching the predicted FL relationship, there still appears to be an approximately 22 degree shift between θmax of the controlled and fatigued groups. θmax for the control group sat between angles of approximately 135-140 degrees, while the θmax for the fatigued group was between 150-160 degrees. Based on the ANOVA for θmax in control and fatigue conditions, it was seen that the difference was significant with a p-value < 0.05 of 0.004775. This indicates that the expected trend of the control group having higher force output at any given angle compared to the fatigue was still observed.
+
+A possible source of error that may explain the discrepancy between the predicted result and the experimental result is that, if the data was collected consecutive from the greatest possible angle (157.5) to the lowest angle (45) for each subjects, the muscles would be be already fatigued once the muscle reached the "ideal" length to provide maximum output. This would result in minimal difference between the force output at high angle compared to the ideal moderate angle resulting in the plateau shape that was observed in the experimental data.
 
 # Author Contribution
 Tingwei Hu - Setup, read files, plot initial data, data analysis code in methods and results
+
 Justin Lau - Discussion
+
 Liz Asprinio - Introduction, Discussion, References
+
+Jinseo Kim - Methods, Results, Discussion, and Formatting
 
 # References
