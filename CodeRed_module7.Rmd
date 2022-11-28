@@ -125,11 +125,13 @@ best.models%>%
 
 # Discussion
 
+The class-wide force-angle data for isometric MVC does not appear to follow a typical FL relationship under both control and fatigued conditions. A typical FL relationship posits that muscles generate the greatest force when at their ideal length and the least amount of force when shortened or stretched relative to the resting length. As such, at extreme angle values, it would be expected that there are decreases in force. However, with the classwide data, it appears that force steadily increases an angle of 40 degrees, hits a max at around 110 degrees and plateaus from 110 degrees to 160 degrees. A typical FL relationship should have force that drops off after the ideal angle is reached, but this was not the case with the class wide data. 
 
+There appears to be approximately a 22 degree shift between the θmax of the controlled vs fatigued group.The θmax for the control group sat between angles of approximately 135-140 degrees, while the θmax for the fatigued group was between 150-160 degrees. Based on the ANOVA for θmax in control and fatigue conditions, it was seen that the difference was significant with a p-value < 0.05 of 0.004775.
 
 # Author Contribution
 Tingwei Hu - Setup, read files, plot initial data, data analysis code in methods and results
-
+Justin Lau - Discussion
 
 
 # References
